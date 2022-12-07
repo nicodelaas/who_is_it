@@ -46,31 +46,4 @@ class DnsController
             $ipaddress = 'UNKNOWN';
         return $ipaddress;
     }
-
-    public function getSummary()
-    {
-        $whois = Factory::get()->createWhois();
-
-        if ($whois->isDomainAvailable("google.com")) {
-        print "Bingo! Domain is available! :)";
-    }
-
-        // Supports Unicode (converts to punycode)
-        if ($whois->isDomainAvailable("почта.рф")) {
-            print "Bingo! Domain is available! :)";
-        }
-
-        // Getting raw-text lookup
-        $response = $whois->lookupDomain("google.com");
-        print $response->text;
-
-        // Getting parsed domain info
-        $info = $whois->loadDomainInfo("google.com");
-        print_r([
-            'Domain created' => date("Y-m-d", $info->creationDate),
-            'Domain expires' => date("Y-m-d", $info->expirationDate),
-            'Domain owner' => $info->owner,
-        ]);
-        return('welcome')->with(['whois' => $whois]);
-    }
 }

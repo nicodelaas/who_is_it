@@ -7,11 +7,9 @@
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
-        "io-developer/php-whois": "^4.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "phpwhois/phpwhois": "^4.2",
         "rmccue/requests": "^2.0"
     },
     "require-dev": {

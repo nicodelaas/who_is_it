@@ -3,7 +3,6 @@
 use App\Http\Controllers\DnsController;
 use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\Route;
-use Iodev\Whois\Factory;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
