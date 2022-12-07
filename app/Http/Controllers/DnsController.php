@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Validation\Factory;
+use Iodev\Whois\Factory;
 use Symfony\Component\Console\Application;
 use Spatie\Dns\Dns;
+use Stevebauman\Location\Facades\Location;
 
 class DnsController
 {
@@ -47,7 +48,8 @@ class DnsController
             $ipaddress = $_SERVER['REMOTE_ADDR'];
         else
             $ipaddress = 'UNKNOWN';
-        return $ipaddress;
+
+        return view('welcome')->with(['ipaddress' => $ipaddress]);
     }
 
     public function dnsRecords(): string
@@ -65,9 +67,55 @@ class DnsController
             'hostNameTimeToLive' => $hostNameTimeToLive]);
     }
 
-    public function summary()
+    public function getDomainIp()
     {
-        $dns = new Dns();
-        $summary = $dns->getSummary('example.com');
+        $ip = gethostbyname('freave.nl');
+
+        return view('welcome', compact('ip'));
     }
+
+    public function getIpInfo()
+    {
+        $ip = '95.211.13.84';
+        $currentUserInfo = Location::get($ip);
+
+        return view('welcome', compact('currentUserInfo'));
+    }
+
+    public function getDomainSummary(): string
+    {
+        // Creating default configured client
+        $whois = Factory::get()->createWhois();
+
+        // Checking availability
+        if ($whois->isDomainAvailable("google.com")) {
+            print "Bingo! Domain is available! :)";
+        }
+
+        // Supports Unicode (converts to punycode)
+        if ($whois->isDomainAvailable("почта.рф")) {
+            print "Bingo! Domain is available! :)";
+        }
+
+        // Getting raw-text lookup
+        $response = $whois->lookupDomain("freave.nl");
+        $output = $response->text;
+        $outputInJson = json_encode($output);
+
+        // Getting parsed domain info
+        $info = $whois->loadDomainInfo("freave.nl");
+        $domainInfo = [
+            'Domain created' => date("Y-m-d", $info->creationDate),
+            'Domain expires' => date("Y-m-d", $info->expirationDate),
+            'Domain owner' => $info->owner,
+        ];
+        return view('welcome')->with([
+            'whois' => $whois,
+            'info' => $info,
+            'domainInfo' => $domainInfo,
+            'response' => $response,
+            'outputInJson' => $outputInJson
+        ]);
+    }
+
 }

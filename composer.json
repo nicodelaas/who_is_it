@@ -6,14 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "ext-mbstring": "*",
         "guzzlehttp/guzzle": "^7.2",
+        "io-developer/php-whois": "^4.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "rmccue/requests": "^2.0",
         "spatie/dns": "^2.5",
-        "ext-mbstring": "*",
         "spatie/macroable": "^1.0|^2.0",
+        "stevebauman/location": "^6.5",
         "symfony/process": "^5.3.7|^6.0"
     },
     "require-dev": {
