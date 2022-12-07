@@ -6,7 +6,7 @@ class EmailController
 {
     public function emailValidator()
     {
-        $email = 'sso@aspapmail.com';
+        $email = 'sso@freave.com';
         list($username, $domain) = explode('@', $email);
 
         if (checkdnsrr($domain, 'MX')) {
@@ -19,5 +19,10 @@ class EmailController
             'result' => $result,
             'domain' => $domain,
             ]));
+    }
+
+    public function mail()
+    {
+        dd('yes');
     }
 }
