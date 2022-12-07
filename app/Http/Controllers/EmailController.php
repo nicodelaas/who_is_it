@@ -6,7 +6,6 @@ class EmailController
 {
     public function emailValidator()
     {
-        $result = '';
         $email = 'sso@aspapmail.com';
         list($username, $domain) = explode('@', $email);
 
