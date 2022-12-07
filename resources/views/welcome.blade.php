@@ -1,4 +1,4 @@
-
+@include('layout.layout')
 {{--@foreach($records as $record)--}}
 {{--    <div class="flex flex-col mb-2">--}}
 {{--        {{$record}}--}}
@@ -30,5 +30,10 @@
 
 {{--{{{$ipaddress}}}--}}
 
-{{$outputInJson}}
-
+<div class="flex h-12 w-12">
+    {!!$jsonInfo!!}
+    <br>
+    {!! $jsondomainInfo !!}
+    <br>
+    {!!$trimmedResponse!!}
+</div>
