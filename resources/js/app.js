@@ -15,6 +15,8 @@ const app = createApp({
 
 import HeaderComponent from '../js/components/HeaderComponent.vue';
 import ExampleComponent from '../js/components/ExampleComponent.vue';
+import UserIp from "./components/UserIp.vue";
 app.component('example-component', ExampleComponent);
 app.component('header-component', HeaderComponent);
+app.component('user-ip-component', UserIp);
 app.mount('#app');
