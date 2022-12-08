@@ -13,10 +13,17 @@ import { createApp } from 'vue';
 const app = createApp({
 });
 
+const body = createApp({
+
+});
+
 import HeaderComponent from '../js/components/HeaderComponent.vue';
 import ExampleComponent from '../js/components/ExampleComponent.vue';
 import UserIp from "./components/UserIp.vue";
+import TitleAndInputComponent from "./components/TitleAndInputComponent.vue";
 app.component('example-component', ExampleComponent);
 app.component('header-component', HeaderComponent);
 app.component('user-ip-component', UserIp);
+body.component('title-input-component', TitleAndInputComponent)
 app.mount('#app');
+body.mount('#body');
