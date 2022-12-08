@@ -11,12 +11,10 @@ import { createApp } from 'vue';
  */
 
 const app = createApp({
-    props: ['trimmedResponse']
 });
 
-
-
-import ExampleComponent from './components/ExampleComponent.vue';
+import HeaderComponent from '../js/components/HeaderComponent.vue';
+import ExampleComponent from '../js/components/ExampleComponent.vue';
 app.component('example-component', ExampleComponent);
-
+app.component('header-component', HeaderComponent);
 app.mount('#app');
