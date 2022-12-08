@@ -81,41 +81,4 @@ class DnsController
 
         return view('welcome', compact('currentUserInfo'));
     }
-
-    public function getDomainSummary(): string
-    {
-        // Creating default configured client
-        $whois = Factory::get()->createWhois();
-
-        // Checking availability
-        if ($whois->isDomainAvailable("google.com")) {
-            print "Bingo! Domain is available! :)";
-        }
-
-        // Supports Unicode (converts to punycode)
-        if ($whois->isDomainAvailable("почта.рф")) {
-            print "Bingo! Domain is available! :)";
-        }
-
-        // Getting raw-text lookup
-        $response = $whois->lookupDomain("freave.nl");
-        $output = $response->text;
-        $outputInJson = json_encode($output);
-
-        // Getting parsed domain info
-        $info = $whois->loadDomainInfo("freave.nl");
-        $domainInfo = [
-            'Domain created' => date("Y-m-d", $info->creationDate),
-            'Domain expires' => date("Y-m-d", $info->expirationDate),
-            'Domain owner' => $info->owner,
-        ];
-        return view('welcome')->with([
-            'whois' => $whois,
-            'info' => $info,
-            'domainInfo' => $domainInfo,
-            'response' => $response,
-            'outputInJson' => $outputInJson
-        ]);
-    }
-
 }

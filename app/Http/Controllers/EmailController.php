@@ -18,7 +18,7 @@ class EmailController
         return(view('email')->with([
             'result' => $result,
             'domain' => $domain,
-            ]));
+        ]));
     }
 
     public function mail()
