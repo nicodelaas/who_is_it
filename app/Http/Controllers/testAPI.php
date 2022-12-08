@@ -22,10 +22,24 @@ class testAPI extends Controller
                 print "Null if domain available";
                 exit;
             }
-            return dd($info);
+
+            $textArray = $info->getResponse()->text;
+            $regex = '/\r\n|: /im';
+            $textArray = preg_split($regex, $textArray);
+            for($i = 0; $i < 50; $i + 2)
+            {
+                $text = [
+                    $textArray[$i] => $textArray[$i + 1]
+                ];
+            }
+            dd($text);
+
+
+            return $formatted_data;
         } catch (ConnectionException $e) {
             print "Disconnect or connection timeout";
         } catch (ServerMismatchException $e) {
+            dd($e);
             print "TLD server (.com for google.com) not found in current server hosts";
         } catch (WhoisException $e) {
             print "Whois server responded with error '{$e->getMessage()}'";
