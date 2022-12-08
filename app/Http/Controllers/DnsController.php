@@ -31,7 +31,7 @@ class DnsController
         return view('welcome')->with(['escaped' => $escaped]);
     }
 
-    public function getUserIpAddr()
+    public function getUserIpAddress()
     {
         $ipaddress = '';
         if (isset($_SERVER['HTTP_CLIENT_IP']))
@@ -74,11 +74,53 @@ class DnsController
         return view('welcome', compact('ip'));
     }
 
-    public function getIpInfo()
+    public function ReversDnsRecords()
     {
         $ip = '95.211.13.84';
         $currentUserInfo = Location::get($ip);
 
         return view('welcome', compact('currentUserInfo'));
     }
+
+    public function getDomainSummary()
+    {
+        // Creating default configured client
+        $whois = Factory::get()->createWhois();
+
+        // Checking availability
+        if ($whois->isDomainAvailable("google.com")) {
+            print "Bingo! Domain is available! :)";
+        }
+
+        // Supports Unicode (converts to punycode)
+        if ($whois->isDomainAvailable("почта.рф")) {
+            print "Bingo! Domain is available! :)";
+        }
+
+        // Getting raw-text lookup
+        $response = $whois->lookupDomain("freave.nl");
+        $jsonResponse = json_encode($response,true);
+        $trimmedResponse = str_replace('\r\n', '<br>', $jsonResponse);
+
+
+        // Getting parsed domain info
+        $info = $whois->loadDomainInfo("freave.nl");
+        $domainInfo = [
+            'Domain created' => date("Y-m-d", $info->creationDate),
+            'Domain expires' => date("Y-m-d", $info->expirationDate),
+            'Domain owner' => $info->owner,
+        ];
+        $jsonWhois = json_encode($whois,true);
+        $jsonInfo = json_encode($info,true);
+        $jsondomainInfo = json_encode($domainInfo,true);
+
+        return view('welcome')->with([
+            'jsonWhois' => $jsonWhois,
+            'jsonInfo' => $jsonInfo,
+            'jsondomainInfo' => $jsondomainInfo,
+            'response' => $response,
+            'trimmedResponse' => $trimmedResponse
+        ]);
+    }
+
 }
