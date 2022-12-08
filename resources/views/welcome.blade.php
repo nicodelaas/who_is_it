@@ -30,10 +30,18 @@
 
 {{--{{{$ipaddress}}}--}}
 
-<div class="flex h-12 w-12">
-    {!!$jsonInfo!!}
-    <br>
-    {!! $jsondomainInfo !!}
-    <br>
-    {!!$trimmedResponse!!}
+{{--<div class="flex h-12 w-12">--}}
+{{--    {!!$jsonInfo!!}--}}
+{{--    <br>--}}
+{{--    {!! $jsondomainInfo !!}--}}
+{{--    <br>--}}
+{{--    {!!$trimmedResponse!!}--}}
+{{--</div>--}}
+
+<div id='app'>
+<example-component :trimmedResponse="{{ $trimmedResponse }}"></example-component>
 </div>
+
+
+
+
