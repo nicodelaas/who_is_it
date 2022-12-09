@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("dns/{domain}",[testAPI::class,'getDNSData']);
+Route::get("{domain}",[testAPI::class,'getDNSData']);
+Route::get("dns/{domain}/{Type?}",[testAPI::class,'getDNSRecords']);

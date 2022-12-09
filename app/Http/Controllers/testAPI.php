@@ -19,44 +19,34 @@ class testAPI extends Controller
             $whois = Factory::get()->createWhois();
             $info = $whois->loadDomainInfo($domain);
             if (!$info) {
-                print "Null if domain available";
+                return "This domain is available";
                 exit;
             }
 
-            $textArray = $info->getResponse()->text;
-            $regex = '/\r\n|: /im';
-            $textArray = preg_split($regex, $textArray);
-            for($i = 0; $i < 50; $i + 2)
-            {
-                $text = [
-                    $textArray[$i] => $textArray[$i + 1]
-                ];
-            }
-            dd($text);
+            $extraData = $info->getExtra()["groups"][0];
+
+            return $extraData;
 
 
-            return $formatted_data;
+            return dd($info);
         } catch (ConnectionException $e) {
-            print "Disconnect or connection timeout";
+            return "Disconnect or connection timeout";
         } catch (ServerMismatchException $e) {
-            dd($e);
-            print "TLD server (.com for google.com) not found in current server hosts";
+            return "TLD server (.com for google.com) not found in current server hosts";
         } catch (WhoisException $e) {
-            print "Whois server responded with error '{$e->getMessage()}'";
+            return "Whois server responded with error '{$e->getMessage()}'";
         }
-
-//        $dns = new Dns();
-//
-//        try {
-//            $records = dd($dns->getRecords($domain));
-//            return $records;
-//        } catch(CouldNotFetchDns $e) {
-//            return ["errors" => $e];
-//        }
     }
 
-    function getServers()
+    function getDNSRecords(string $domain, string $type = '*')
     {
         $dns = new Dns();
+
+        try {
+            $records = $dns->getRecords($domain, $type);
+            return dd($records);
+        } catch(CouldNotFetchDns $e) {
+            return ["errors" => $e];
+        }
     }
 }
