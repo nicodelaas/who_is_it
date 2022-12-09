@@ -1,4 +1,10 @@
 <template>
+    <div class="flex flex-col" v-for="item in listItems">
+        <tr>
+            <td class="p-5">{{ item.property }}</td>
+            <td>{{ item.value }}</td>
+        </tr>
+    </div>
     <header class="flex justify-between items-center h-20 bg-teal-900">
         <div class="flex items-center text-center">
             <a href="http://www.freave.nl"><img v-bind:src="('/images/logo.svg')" class=" mr-1 ml-4 h-22 w-36" alt="logo"></a>
@@ -27,8 +33,32 @@ export default {
     name: "HeaderComponent",
     data() {
         return {
-            isDropdownOpen: false
+            isDropdownOpen: false,
+            listItems: ''
         };
+    },
+    methods: {
+        // async getData() {
+        //     const result = await fetch("http://127.0.0.1:8000/api/freave.com");
+        //     const res = await result.json();
+        //     this.resultArray = res
+        //     console.log(this.resultArray);
+        // },
+        async getData() {
+            const res = await fetch("http://127.0.0.1:8000/api/freave.com");
+            // const finalRes = await res.json();
+            // this.listItems = finalRes;
+            const finalRes = await res.json();
+            console.log(finalRes)
+            this.listItems = Object.entries(finalRes).map((arr) => ({
+               property: arr[0],
+               value: arr[1],
+            }));
+            console.log(this.listItems)
+        }
+    },
+    mounted() {
+        this.getData();
     }
 }
 </script>

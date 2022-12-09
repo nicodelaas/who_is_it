@@ -17,8 +17,8 @@ const body = createApp({
 
 });
 
-import HeaderComponent from '../js/components/HeaderComponent.vue';
-import ExampleComponent from '../js/components/ExampleComponent.vue';
+import HeaderComponent from './components/HeaderComponent.vue';
+import ExampleComponent from './components/ExampleComponent.vue';
 import UserIp from "./components/UserIp.vue";
 import TitleAndInputComponent from "./components/TitleAndInputComponent.vue";
 app.component('example-component', ExampleComponent);
