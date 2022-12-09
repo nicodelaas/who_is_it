@@ -23,9 +23,9 @@ class DnsController extends Controller
                 return "This domain is available";
                 exit;
             }
-            if (str_contains($domain, ".com"))
+            if (collect($info->getExtra()["groups"][0])->count() > 20)
             {
-                $dnsData = $info->getExtra()["groups"][0];
+                $dnsData = collect($info->getExtra()["groups"][0]);
             } else {
                 $dnsData = $info->getResponse()->text;
                 $regex = '/\r\n|: /im';
