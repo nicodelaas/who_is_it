@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\testAPI;
+use App\Http\Controllers\DnsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("{domain}",[testAPI::class,'getDNSData']);
-Route::get("dns/{domain}/{Type?}",[testAPI::class,'getDNSRecords']);
+Route::get("{domain}",[DnsController::class,'getDNS']);
+Route::get("dns/{domain}/{Type?}",[DnsController::class,'getRecords']);
