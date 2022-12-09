@@ -52,13 +52,13 @@ class DnsController
         return view('welcome')->with(['ipaddress' => $ipaddress]);
     }
 
-    public function dnsRecords(): string
+    public function dnsRecords($domain = null): string
     {
         $dns = new Dns();
 
-        $dns->getRecords('freave.nl'); // returns all available dns records
-        $dns->getRecords('freave.nl', 'A'); // returns only A records
-        $records = collect($dns->getRecords('freave.nl'));
+        $dns->getRecords($domain ?: 'google.com'); // returns all available dns records
+        $dns->getRecords($domain ?: 'google.com', 'A'); // returns only A records
+        $records = collect($dns->getRecords($domain ?: 'google.com'));
         $hostNameOfFirstRecord = $records[0]->host();
         $hostNameTimeToLive = $records[0]->ttl();
         return (string)view('welcome')->with([
