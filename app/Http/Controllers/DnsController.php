@@ -31,10 +31,11 @@ class DnsController extends Controller
                 $regex = '/\r\n|: /im';
                 $dnsData = preg_split($regex, $dnsData);
             }
+
             if (isset($_GET["dns"]))
-                return dd($dnsData, $this->getRecords($domain));
+                return $dnsData . $this->getRecords($domain);
             else {
-                return dd($dnsData);
+                return $dnsData;
             }
 
         } catch (ConnectionException $e) {
