@@ -13,8 +13,9 @@ use Spatie\Dns\Exceptions\CouldNotFetchDns;
 
 class DnsController extends Controller
 {
-    function getDNS(string $domain)
+    function getDNS()
     {
+        $domain = "freave.com";
         try {
             $whois = Factory::get()->createWhois();
             $info = $whois->loadDomainInfo($domain);
@@ -31,6 +32,14 @@ class DnsController extends Controller
                 $regex = '/\r\n|: /im';
                 $dnsData = preg_split($regex, $dnsData);
             }
+
+            $adminItems = array();
+
+            foreach($dnsData as $key => $val) {
+                if(str_starts_with($key, 'Admin'))
+                    $adminItems[$key] = $val;
+            }
+            dd($adminItems);
 
             if (isset($_GET["dns"]))
                 return $dnsData . $this->getRecords($domain);
