@@ -17,15 +17,25 @@ class DnsController extends Controller
     {
         try {
             $whois = Factory::get()->createWhois();
-            $info = dd($whois->loadDomainInfo($domain));
+            $info = $whois->loadDomainInfo($domain);
+
             if (!$info) {
                 return "This domain is available";
                 exit;
             }
-
-            $extraData = $info->getExtra()["groups"][0];
-
-            return $extraData;
+            if (str_contains($domain, ".com"))
+            {
+                $dnsData = $info->getExtra()["groups"][0];
+            } else {
+                $dnsData = $info->getResponse()->text;
+                $regex = '/\r\n|: /im';
+                $dnsData = preg_split($regex, $dnsData);
+            }
+            if (isset($_GET["dns"]))
+                return dd($dnsData, $this->getRecords($domain));
+            else {
+                return dd($dnsData);
+            }
 
         } catch (ConnectionException $e) {
             return "Disconnect or connection timeout";
@@ -42,7 +52,7 @@ class DnsController extends Controller
 
         try {
             $records = $dns->getRecords($domain, $type);
-            return dd($records);
+            return $records;
         } catch(CouldNotFetchDns $e) {
             return ["errors" => $e];
         }
