@@ -38,8 +38,15 @@ class testAPI extends Controller
         }
     }
 
-    function getServers()
+    function getDNSRecords(string $domain, string $type = '*')
     {
         $dns = new Dns();
+
+        try {
+            $records = $dns->getRecords($domain, $type);
+            return dd($records);
+        } catch(CouldNotFetchDns $e) {
+            return ["errors" => $e];
+        }
     }
 }
