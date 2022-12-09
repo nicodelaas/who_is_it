@@ -13,8 +13,9 @@ use Spatie\Dns\Exceptions\CouldNotFetchDns;
 
 class testAPI extends Controller
 {
-    function getDNSData(string $domain)
+    function getDNSData()
     {
+        $domain = "vox.com";
         try {
             $whois = Factory::get()->createWhois();
             $info = $whois->loadDomainInfo($domain);
@@ -25,10 +26,6 @@ class testAPI extends Controller
 
             $extraData = $info->getExtra()["groups"][0];
 
-            return $extraData;
-
-
-            return dd($info);
         } catch (ConnectionException $e) {
             return "Disconnect or connection timeout";
         } catch (ServerMismatchException $e) {
@@ -36,6 +33,7 @@ class testAPI extends Controller
         } catch (WhoisException $e) {
             return "Whois server responded with error '{$e->getMessage()}'";
         }
+        return view('/welcome')->with('extraData', $extraData);
     }
 
     function getDNSRecords(string $domain, string $type = '*')
