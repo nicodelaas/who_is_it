@@ -24,7 +24,7 @@ class DnsController extends Controller
                 return "This domain is available";
                 exit;
             }
-            if (str_contains($domain, ".com"))
+            if (collect($info->getExtra()["groups"][0])->count() > 20)
             {
                 $dnsData = collect($info->getExtra()["groups"][0]);
             } else {
@@ -33,18 +33,12 @@ class DnsController extends Controller
                 $dnsData = preg_split($regex, $dnsData);
             }
 
-            $adminItems = array();
+            $specificArray = array();
 
             foreach($dnsData as $key => $val) {
-                if(str_starts_with($key, 'Admin'))
-                    $adminItems[$key] = $val;
+                if(str_starts_with($key, 'Billing'))
+                    $specificArray[$key] = $val;
             }
-//
-//            if (isset($_GET["dns"]))
-//                return $dnsData . $this->getRecords($domain);
-//            else {
-//                return $dnsData;
-//            }
 
         } catch (ConnectionException $e) {
             return "Disconnect or connection timeout";

@@ -31,33 +31,26 @@ export default {
     name: "HeaderComponent",
     data() {
         return {
-            isDropdownOpen: false,
-            listItems: ''
+            listItems: [],
         };
     },
     methods: {
-        // async getData() {
-        //     const result = await fetch("http://127.0.0.1:8000/api/freave.com");
-        //     const res = await result.json();
-        //     this.resultArray = res
-        //     console.log(this.resultArray);
-        // },
         async getData() {
             const res = await fetch("http://127.0.0.1:8000/api/freave.com");
-            // const finalRes = await res.json();
-            // this.listItems = finalRes;
             const finalRes = await res.json();
-            console.log(finalRes)
             this.listItems = Object.entries(finalRes).map((arr) => ({
-               property: arr[0],
-               value: arr[1],
+                property: arr[0],
+                value: arr[1],
             }));
-            console.log(this.listItems)
+
+            return this.listItems;
+        },
+        getBillingItems(filteredProperty) {
+            return this.listItems.filter(item => item.property.startsWith(filteredProperty));
         }
     },
-    mounted() {
+    created() {
         this.getData();
     }
 }
 </script>
-
