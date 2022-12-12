@@ -1,13 +1,10 @@
 <template>
-    <div class="flex flex-col" v-for="item in listItems">
-        <tr>
-            <td class="p-5">{{ item.property }}</td>
-            <td>{{ item.value }}</td>
-        </tr>
+    <div class="w-full h-8 px-12">
+        <user-ip-component></user-ip-component>
     </div>
-    <header class="flex justify-between items-center h-20 bg-teal-900">
+    <header class="flex justify-between items-center px-12 h-20 bg-[#1da1f2]">
         <div class="flex items-center text-center">
-            <a href="http://www.freave.nl"><img v-bind:src="('/images/logo.svg')" class=" mr-1 ml-4 h-22 w-36" alt="logo"></a>
+            <a href="http://www.freave.nl"><img v-bind:src="('/img/logo1.scvg.svg')" class=" mr-1 ml-4 h-22 w-36" alt="logo"></a>
             <h1 class="text-white font-bold text-2xl mt-5">Whois</h1>
         </div>
         <h1 class="text-white font-bold text-xl">Find your website's true identity with DNS Lookup!</h1>
@@ -17,8 +14,8 @@
             <a class="mr-10 hover:text-lime-500" href="#">Logout</a>
         </nav>
     </header>
-    <div class="flex justify-end mt-6 m-6">
-        <ul class=" flex flex-col rounded-md text-center bg-teal-900
+    <div class="flex justify-end">
+        <ul class=" flex flex-col rounded-l-md text-center bg-[#1da1f2]
      text-white font-bold text-xl w-1/6" v-if="isDropdownOpen">
             <li class="mb-4 mt-4 hover:text-lime-500"><a href="#">DNS Records</a></li>
             <li class="mb-4 hover:text-lime-500"><a href="#">Email verification</a></li>
@@ -30,6 +27,7 @@
 
 <script>
 export default {
+    name: "UserIp",
     name: "HeaderComponent",
     data() {
         return {

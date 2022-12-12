@@ -39,13 +39,12 @@ class DnsController extends Controller
                 if(str_starts_with($key, 'Admin'))
                     $adminItems[$key] = $val;
             }
-            dd($adminItems);
-
-            if (isset($_GET["dns"]))
-                return $dnsData . $this->getRecords($domain);
-            else {
-                return $dnsData;
-            }
+//
+//            if (isset($_GET["dns"]))
+//                return $dnsData . $this->getRecords($domain);
+//            else {
+//                return $dnsData;
+//            }
 
         } catch (ConnectionException $e) {
             return "Disconnect or connection timeout";

@@ -21,9 +21,11 @@ import HeaderComponent from './components/HeaderComponent.vue';
 import ExampleComponent from './components/ExampleComponent.vue';
 import UserIp from "./components/UserIp.vue";
 import TitleAndInputComponent from "./components/TitleAndInputComponent.vue";
+import InfoBlockComponent from "./components/infoBlockComponent.vue";
 app.component('example-component', ExampleComponent);
 app.component('header-component', HeaderComponent);
 app.component('user-ip-component', UserIp);
 body.component('title-input-component', TitleAndInputComponent)
+body.component('info-block-component' , InfoBlockComponent)
 app.mount('#app');
 body.mount('#body');
