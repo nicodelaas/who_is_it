@@ -40,12 +40,6 @@ class DnsController extends Controller
                     $specificArray[$key] = $val;
             }
 
-            if (isset($_GET["dns"]))
-                return $dnsData . $this->getRecords($domain);
-            else {
-                return $dnsData;
-            }
-
         } catch (ConnectionException $e) {
             return "Disconnect or connection timeout";
         } catch (ServerMismatchException $e) {
