@@ -33,13 +33,12 @@ class DnsController extends Controller
                 $dnsData = preg_split($regex, $dnsData);
             }
 
-            $adminItems = array();
+            $specificArray = array();
 
             foreach($dnsData as $key => $val) {
-                if(str_starts_with($key, 'Admin'))
-                    $adminItems[$key] = $val;
+                if(str_starts_with($key, 'Billing'))
+                    $specificArray[$key] = $val;
             }
-            dd($adminItems);
 
             if (isset($_GET["dns"]))
                 return $dnsData . $this->getRecords($domain);

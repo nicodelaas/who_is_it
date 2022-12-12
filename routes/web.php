@@ -5,4 +5,7 @@ use App\Http\Controllers\testAPI;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [DnsController::class, 'getDNS']);
+Route::get('/', function () {
+    return view('welcome');
+});
+
