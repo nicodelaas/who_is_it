@@ -3,47 +3,67 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Factory;
-use Illuminate\View\View;
-use Symfony\Component\Console\Application;
+use Spatie\Dns\Dns;
 
-class DnsController
+use Iodev\Whois\Factory;
+use Iodev\Whois\Exceptions\ConnectionException;
+use Iodev\Whois\Exceptions\ServerMismatchException;
+use Iodev\Whois\Exceptions\WhoisException;
+use Spatie\Dns\Exceptions\CouldNotFetchDns;
+
+class DnsController extends Controller
 {
-    public function showMx(): Factory|string|Application
+    function getDNS()
     {
-        $testDomain = 'freave.nl';
-        if (dns_get_mx($testDomain, $mx_details)) {
-            foreach ($mx_details as $key => $value) {
-                return "$key => $value <br>";
+        $domain = "freave.com";
+        try {
+            $whois = Factory::get()->createWhois();
+            $info = $whois->loadDomainInfo($domain);
+
+            if (!$info) {
+                return "This domain is available";
+                exit;
             }
+            if (collect($info->getExtra()["groups"][0])->count() > 20)
+            {
+                $dnsData = collect($info->getExtra()["groups"][0]);
+            } else {
+                $dnsData = $info->getResponse()->text;
+                $regex = '/\r\n|: /im';
+                $dnsData = preg_split($regex, $dnsData);
+            }
+
+            $specificArray = array();
+
+            foreach($dnsData as $key => $val) {
+                if(str_starts_with($key, 'Billing'))
+                    $specificArray[$key] = $val;
+            }
+
+            if (isset($_GET["dns"]))
+                return $dnsData . $this->getRecords($domain);
+            else {
+                return $dnsData;
+            }
+
+        } catch (ConnectionException $e) {
+            return "Disconnect or connection timeout";
+        } catch (ServerMismatchException $e) {
+            return "TLD server (.com for google.com) not found in current server hosts";
+        } catch (WhoisException $e) {
+            return "Whois server responded with error '{$e->getMessage()}'";
         }
-
-        return view('/welcome')->with([
-            'mx_details' => $mx_details,
-            'testDomain' => $testDomain]);
     }
-    public function dns_get_record()
+
+    function getRecords(string $domain, string $type = '*')
     {
-        $dnsRecord = dns_get_record("www.freave.nl", DNS_MX);
-        return view('welcome')->with(['dnsRecord' => $dnsRecord]);
-    }
+        $dns = new Dns();
 
-    public function getUserIpAddr(){
-        $ipaddress = '';
-        if (isset($_SERVER['HTTP_CLIENT_IP']))
-            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED'];
-        else if(isset($_SERVER['REMOTE_ADDR']))
-            $ipaddress = $_SERVER['REMOTE_ADDR'];
-        else
-            $ipaddress = 'UNKNOWN';
-        return $ipaddress;
+        try {
+            $records = $dns->getRecords($domain, $type);
+            return $records;
+        } catch(CouldNotFetchDns $e) {
+            return ["errors" => $e];
+        }
     }
 }
